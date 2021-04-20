@@ -2,7 +2,7 @@
 
 """
 
-content_name = "landscape.jpg"
+content_name = "leaves.jpg"
 style_name = "fantasy_style.jpg"
 
 content_weight = 5

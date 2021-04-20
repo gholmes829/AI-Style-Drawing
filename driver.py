@@ -61,38 +61,40 @@ class Driver:
 	def train(self) -> None:
 		# using adam optimizer and it will update the generated image not the model parameter 
 		optimizer = optim.Adam([self.generated_image], lr=self.lr)
+		print("Saving 'gen_0.png'...")
+		save_image(self.generated_image, self.save_path + "/gen_0.png")
 		print("Beginning training...")
 		print()
 		# iterating for epoch times
-		for e in range(self.epoch):
+		for e in range(1, self.epoch+1):
 			print("Beginning iteration:", e)
 			timer = time()
 			# extracting the features of generated, content and the original required for calculating the loss
+			print("   Extracting features...")
 			gen_features=self.model(self.generated_image)
 			orig_feautes=self.model(self.original_image)
 			style_featues=self.model(self.style_image)
 
-			print("   Extracted features...")
-			
 			# iterating over the activation of each layer and calculate the loss and add it to the content and the style loss
+			print("   Calculating loss...")
 			total_loss = self.calculate_loss(gen_features, orig_feautes, style_featues)
-			print("   Calculated loss...")
 			
 			# optimize the pixel values of the generated image and backpropagate the loss
 			optimizer.zero_grad()
+			print("   Stepping backwards...")
 			total_loss.backward()
-			print("   Stepped backward...")
+            
+			print("   Optimizer stepping...")
 			optimizer.step()
-			print("   Optimizer stepped...")
+
 			# print the image and save it after each several epochs
 			elapsed = time() - timer
 			print("Total loss:", total_loss.item())
 			print("Time elapsed:", round(elapsed, 3), "secs")
-			if(e%5 == 0):
-				print("Saving...")
+			if e % 5 == 0:
+				print("Saving 'gen_"+ str(e) + ".png'...")
 				save_image(self.generated_image, self.save_path + "/gen_"+ str(e) + ".png")
 			print()
-
 
 	def calc_content_loss(self, gen_feat, orig_feat) -> float:
 		# calculating the content loss of each layer by calculating the MSE between the content and generated features and adding it to content loss
@@ -136,7 +138,7 @@ class Driver:
 			else:  # landscape
 				size = (int(settings.max_size * ratio), min(width, settings.max_size))
                 
-		print("Loading in " + image_name + " with size " + str(size) + "...")				
+		print("Loading in '" + image_name + "' with size " + str(size) + "...")				
 		loader = transforms.Compose([transforms.Resize(size), transforms.ToTensor()])
         
 		# The preprocessing steps involves resizing the image and then converting it to a tensor
