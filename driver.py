@@ -114,8 +114,8 @@ class Driver:
 		style_loss, content_loss = 0, 0
 		for gen,cont,style in zip(gen_features, orig_feautes, style_featues):
 			# extracting the dimensions from the generated image
-			content_loss+=self.calc_content_loss(gen,cont)
-			style_loss+=self.calc_style_loss(gen,style)
+			content_loss += self.calc_content_loss(gen,cont)
+			style_loss += self.calc_style_loss(gen,style)
 		
 		# calculating the total loss of e th epoch
 		total_loss = self.alpha * content_loss + self.beta * style_loss 
