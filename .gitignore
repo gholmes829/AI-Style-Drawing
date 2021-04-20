@@ -1,9 +1,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
-Scripts/
-pyvenv.cfg
-Lib/
+
+venv/
 
 output/**
 images/**
