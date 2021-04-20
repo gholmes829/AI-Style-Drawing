@@ -5,6 +5,7 @@ Scripts/
 pyvenv.cfg
 Lib/
 
-output/**
-images/**
+output/*
+images/*
+
 !*/.gitkeep
