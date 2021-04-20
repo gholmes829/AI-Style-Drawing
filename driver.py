@@ -23,12 +23,6 @@ class Driver:
 		self.image_path = os.path.join(self.cwd, "images")
 		self.output_path = os.path.join(self.cwd, "output")
 		
-		if "output" not in os.listdir(self.cwd):
-			os.mkdir(self.output_path)
-			
-		if "images" not in os.listdir(self.cwd):
-			os.mkdir(self.image_path)
-		
 		save_folder_name = self.content_name[:self.content_name.rindex(".")]
 		self.save_path = os.path.join(self.output_path, save_folder_name)
 		output_files = os.listdir(self.output_path)
@@ -128,7 +122,6 @@ class Driver:
 		return total_loss
 
 	def image_loader(self, image_name: str, size = None):
-
 		image_path = os.path.join(self.image_path, image_name)
 		image = Image.open(image_path)
 		width, height = image.size
@@ -139,11 +132,13 @@ class Driver:
 		if size is None:
 			ratio = height / width
 			if ratio > 1:  # portrait
-				size = (min(height, 2560), int(width / ratio))
+				size = (min(height, settings.max_size), int(width / settings.max_size))
 			else:  # landscape
-				size = (int(height * ratio), min(width, 2560))
-				
+				size = (int(settings.max_size * ratio), min(width, settings.max_size))
+                
+		print("Loading in " + image_name + " with size " + str(size) + "...")				
 		loader = transforms.Compose([transforms.Resize(size), transforms.ToTensor()])
+        
 		# The preprocessing steps involves resizing the image and then converting it to a tensor
 		image = loader(image).unsqueeze(0)
 		return image.to(self.device, torch.float), size
