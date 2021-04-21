@@ -134,9 +134,11 @@ class Driver:
 		if size is None:
 			ratio = height / width
 			if ratio > 1:  # portrait
-				size = (min(height, settings.max_size), int(width / settings.max_size))
+				clipped = int(height > settings.max_size)
+				size = (min(height, settings.max_size), int((1-clipped) * (width) + clipped * (settings.max_size / ratio)))
 			else:  # landscape
-				size = (int(settings.max_size * ratio), min(width, settings.max_size))
+				clipped = int(height > settings.max_size)
+				size = (int((1-clipped) * height + clipped * (settings.max_size * ratio)), min(width, settings.max_size))
                 
 		print("Loading in '" + image_name + "' with size " + str(size) + "...")				
 		loader = transforms.Compose([transforms.Resize(size), transforms.ToTensor()])

@@ -2,8 +2,8 @@
 
 """
 
-content_name = "leaves.jpg"
-style_name = "fantasy_style.jpg"
+content_name = "noraboo.jpg"
+style_name = "cotton_candy.png"
 
 content_weight = 7
 style_weight = 80
