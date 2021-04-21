@@ -140,7 +140,7 @@ class Driver:
 				clipped = int(height > settings.max_size)
 				size = (int((1-clipped) * height + clipped * (settings.max_size * ratio)), min(width, settings.max_size))
                 
-		print("Loading in '" + image_name + "' with size " + str(size) + "...")				
+		print("Loading in '" + image_name + "' with size " + str((size[1], size[0])) + "...")				
 		loader = transforms.Compose([transforms.Resize(size), transforms.ToTensor()])
         
 		# The preprocessing steps involves resizing the image and then converting it to a tensor
